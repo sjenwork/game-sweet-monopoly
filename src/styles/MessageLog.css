@@ -1,0 +1,21 @@
+.message-log {
+  border: 2px solid #ffd1dc;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 15px 0;
+  background-color: #fff8f9;
+  min-height: 60px;
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(249, 156, 173, 0.15);
+}
+
+.message-content {
+  font-size: 15px;
+  color: #8f5a6a;
+  white-space: pre-line;
+  line-height: 1.5;
+  font-weight: 500;
+} 

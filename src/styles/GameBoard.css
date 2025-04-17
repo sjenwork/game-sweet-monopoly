@@ -1,0 +1,229 @@
+:root {
+  --cell-width: calc((100vw - 40px) / 10); /* 10個格子平分寬度，減去左右padding */
+  --primary-pink: #f9708e;
+  --light-pink: #ffd1dc;
+  --pastel-blue: #a8d8ff;
+  --pastel-green: #b5ead7;
+  --pastel-purple: #c7ceea;
+  --cream: #fff9e6;
+  --border-style: 2px dashed #f9a8bc;
+}
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 20px;
+  background-color: rgba(255, 244, 246, 0.6);
+}
+
+.board-row {
+  display: flex;
+  height: 8vh;
+}
+
+.top-row, .bottom-row {
+  width: 100%;
+}
+
+.board-sides {
+  display: flex;
+  flex: 1;
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  width: var(--cell-width);
+}
+
+.board-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 250, 250, 0.7);
+  position: relative; /* 添加相對定位以便玩家卡片可以絕對定位於此 */
+  overflow: hidden;
+  border-radius: 15px;
+  border: var(--border-style);
+}
+
+.board-center::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffd1dc' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: -1;
+}
+
+.board-cell {
+  width: var(--cell-width);
+  height: 8vh;
+  border: 2px solid #ffc9d5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2vh;
+  position: relative;
+  padding: 5px;
+  transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  margin: 2px;
+  box-shadow: 0 2px 6px rgba(249, 156, 173, 0.2);
+}
+
+/* 頂部和底部行的格子水平均分 */
+.top-row .board-cell,
+.bottom-row .board-cell {
+  width: auto;
+  flex: 1;
+}
+
+/* 左側和右側列的格子配合頂部和底部行的寬度與高度 */
+.left-column .board-cell,
+.right-column .board-cell {
+  width: var(--cell-width);
+  height: auto;
+  flex: 1;
+}
+
+.board-cell.ingredient {
+  background-color: rgba(255, 244, 249, 0.9);
+  border: 2px solid #ffcad4;
+}
+
+.board-cell.special {
+  background-color: rgba(255, 235, 245, 0.9);
+  border: 2px solid #f9a8bc;
+}
+
+.board-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(249, 156, 173, 0.3);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.cell-content {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3vh;
+  color: #e75480;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+}
+
+.cell-players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+/* 玩家卡容器樣式 - 直接放在board-center內 */
+.player-card-container {
+  position: absolute;
+  width: 16vw;
+  max-width: 220px;
+  min-width: 160px;
+  max-height: 26vh;
+  overflow-y: auto;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(249, 156, 173, 0.25);
+  transition: all 0.3s ease;
+  border: 2px solid #ffd1dc;
+  padding: 8px;
+}
+
+/* 定義四個角落的位置 - 相對於board-center */
+.top-left-corner {
+  top: 15px;
+  left: 15px;
+}
+
+.top-right-corner {
+  top: 15px;
+  right: 15px;
+}
+
+.bottom-left-corner {
+  bottom: 15px;
+  left: 15px;
+}
+
+.bottom-right-corner {
+  bottom: 15px;
+  right: 15px;
+}
+
+.player {
+  width: 2.2vw;
+  height: 2.2vw;
+  max-width: 25px;
+  max-height: 25px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  margin: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.player:hover {
+  transform: scale(1.2);
+}
+
+.player-1 {
+  background-color: var(--primary-pink);
+  border: 2px solid #ffb6c1;
+}
+
+.player-2 {
+  background-color: var(--pastel-blue);
+  border: 2px solid #77c3ff;
+  color: #1565c0;
+}
+
+.player-3 {
+  background-color: var(--pastel-green);
+  border: 2px solid #8fd3b6;
+  color: #2e7d32;
+}
+
+.player-4 {
+  background-color: var(--pastel-purple);
+  border: 2px solid #a6b1e1;
+  color: #4a148c;
+}
+
+.game-title {
+  font-size: 5vw;
+  font-weight: bold;
+  color: #e75480;
+  text-shadow: 3px 3px 0px #ffd1dc, 5px 5px 0px rgba(255, 209, 220, 0.5);
+  font-family: 'Comic Sans MS', 'Marker Felt', cursive;
+  z-index: 4;
+  position: relative;
+  letter-spacing: 0.5vw;
+} 
