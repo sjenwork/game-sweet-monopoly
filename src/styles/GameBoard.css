@@ -1,5 +1,14 @@
 :root {
-  --cell-width: calc((100vw - 40px) / 10); /* 10個格子平分寬度，減去左右padding */
+  /* 基本尺寸变量 */
+  --game-board-width: 100vw;
+  --game-board-height: 100vh;
+  --cell-gap: 4px; /* 格子之间的间距 */
+  
+  /* 计算格子尺寸 */
+  --cell-width: calc((var(--game-board-width) - (11 * var(--cell-gap))) / 10); /* 10個格子平分寬度，考慮11個間隔 */
+  --cell-height: calc((var(--game-board-height) - (11 * var(--cell-gap))) / 10); /* 10個格子平分高度，考慮11個間隔 */
+  
+  /* 其他颜色变量保持不变 */
   --primary-pink: #f9708e;
   --light-pink: #ffd1dc;
   --pastel-blue: #a8d8ff;
@@ -12,20 +21,24 @@
 .game-board {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: var(--game-board-width);
+  height: var(--game-board-height);
   box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
-  padding: 20px;
   background-color: rgba(255, 244, 246, 0.6);
+  gap: var(--cell-gap); /* 使用gap确保行与行之间的间距统一 */
+  padding: var(--cell-gap); /* 使用相同的间距作为内边距 */
 }
 
 .board-row {
   display: flex;
-  height: 8vh;
+  height: var(--cell-height);
+  gap: var(--cell-gap); /* 使用gap确保格子之间的间距统一 */
+  padding: 0;
+  margin: 0;
 }
 
 .top-row, .bottom-row {
@@ -35,12 +48,16 @@
 .board-sides {
   display: flex;
   flex: 1;
+  gap: var(--cell-gap); /* 使用gap确保左中右区域之间的间距统一 */
+  padding: 0;
+  margin: 0;
 }
 
 .board-column {
   display: flex;
   flex-direction: column;
   width: var(--cell-width);
+  gap: var(--cell-gap); /* 使用gap确保格子之间的间距统一 */
 }
 
 .board-center {
@@ -49,7 +66,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 250, 250, 0.7);
-  position: relative; /* 添加相對定位以便玩家卡片可以絕對定位於此 */
+  position: relative;
   overflow: hidden;
   border-radius: 15px;
   border: var(--border-style);
@@ -67,9 +84,6 @@
 }
 
 .board-cell {
-  width: var(--cell-width);
-  height: 8vh;
-  border: 2px solid #ffc9d5;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -81,25 +95,27 @@
   transition: all 0.3s;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
-  margin: 2px;
   box-shadow: 0 2px 6px rgba(249, 156, 173, 0.2);
+  border: 2px solid #ffc9d5;
+  margin: 0; /* 移除所有边距，统一使用gap控制间距 */
 }
 
 /* 頂部和底部行的格子水平均分 */
 .top-row .board-cell,
 .bottom-row .board-cell {
-  width: auto;
-  flex: 1;
+  width: var(--cell-width);
+  height: var(--cell-height);
 }
 
 /* 左側和右側列的格子配合頂部和底部行的寬度與高度 */
 .left-column .board-cell,
 .right-column .board-cell {
   width: var(--cell-width);
-  height: auto;
-  flex: 1;
+  height: var(--cell-height);
+  box-sizing: border-box;
 }
 
+/* 特殊格子类型样式 */
 .board-cell.ingredient {
   background-color: rgba(255, 244, 249, 0.9);
   border: 2px solid #ffcad4;
